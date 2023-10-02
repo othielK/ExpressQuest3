@@ -69,17 +69,31 @@ const updateUser = (req, res) => {
     });
 };
 
+const deleteUser = (req, res) => {
+  const id = parseInt(req.params.id);
+   database
+  
+      .query("delete from users where id = ?", [id])
+    
+    .then(([result]) => {
+      if (result.affectedRows === 0) {
+        res.status(404).send("Not Found");
+      } else {
+        res.sendStatus(204);
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error editing the user");
+    });
+};
 
-// const postMovie = (req, res) => {
-//       const { title, director, year, color, duration } = req.body;
-//   console.log(req.body);
-//   res.send("Post route is working 🎉");
-// };
 
 module.exports = {
   getUsers,
   getUserById,
   postUser,
-  updateUser, // don't forget to export your function ;)
+  updateUser,
+  deleteUser, 
 };
 
