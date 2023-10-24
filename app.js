@@ -1,3 +1,4 @@
+
 require("dotenv").config();
 
 const port = process.env.APP_PORT;
@@ -15,12 +16,14 @@ const welcome = (req, res) => {
 app.get("/", welcome);
 
 const userHandlers = require("./userHandlers");
+const { hashPassword } = require("./auth.js");
 
 app.get("/api/users", userHandlers.getUsers);
 app.get("/api/users/:id", userHandlers.getUserById);
-app.post("/api/users", userHandlers.postUser);
-app.put("/api/users/:id", userHandlers.updateUser);
+app.post("/api/users", hashPassword,userHandlers.postUser);
+app.put("/api/users/:id",hashPassword, userHandlers.updateUser);
 app.delete("/api/users/:id", userHandlers.deleteUser);
+
 
 
 
